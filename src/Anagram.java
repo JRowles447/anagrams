@@ -13,8 +13,9 @@ public class Anagram {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			while((line = reader.readLine()) != null) {
 				letters = line.toCharArray();
-				char[] c = mergeSortLetters(letters, 0, (letters.length-1));
-				System.out.println(c);
+				char[] c = letters.clone();
+				mergeSortLetters(c, 0, (letters.length-1));
+				System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)));
 			}
 		}
 		catch(Exception e) {
@@ -28,14 +29,13 @@ public class Anagram {
 	// have to scan through files
 
 	// Sort the letters in word alphabetically using merge sort
-	private char[] mergeSortLetters(char[] letters, int start, int end){
+	private void mergeSortLetters(char[] letters, int start, int end) {
 		if (start < end) {
 			int middle = (start + end)/2;
 			mergeSortLetters(letters, start, middle);
 			mergeSortLetters(letters, middle + 1, end);
 			mergeLetters(letters, start, middle, end);
 		}
-		return letters;
 	}
 
 	private void mergeLetters(char[] letters, int start, int middle, int end) {
