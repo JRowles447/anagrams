@@ -3,24 +3,53 @@ import java.io.FileReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.*;
 
 public class Anagram {
 
 	public Anagram(String filename) {
 		String line = null;
+		// int total_size = 262139;
 		char[] letters;
+		int collisions = 0;
+		ArrayList<Node> hash_table = new ArrayList<Node>();
+		// Set<Integer> codes = new TreeSet<Integer>();
+		// Set<String> words = new TreeSet<String>();
+		double count = 0;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			while((line = reader.readLine()) != null) {
 				letters = line.toCharArray();
-				char[] c = letters.clone();
+				char[] c = letters.clone(); 
+				count++;
 				mergeSortLetters(c, 0, (letters.length-1));
-				System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)));
+				// // System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)) + "         hashCode: " + c.hashCode());
+				// words.add((new String(c)));
+				// codes.add(c.hashCode());
+				// hash_table[c.hashCode() % total_size] = (new String(c));
+				int index = c.hashCode();
+				if(hash_table.get(index).sorted_anagram != (new String(c)) && hash_table.get(index) != null){
+					collisions++;
+				}
+				else if (hash_table.get(index) != null){ // no anagram stored there yet
+					ArrayList<String> w = new ArrayList<String>();
+					w.add((new String(letters)));
+					hash_table.add(index, (new Node((new String(c)), w)));
+				}
+				else { //they match
+					hash_table.get(index).anagram_list.add(new String(c));
+				}
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		// System.out.println(codes.size());
+		System.out.println("count: " + count);
+		// System.out.println("words: " + words.size());
+		System.out.println(hash_table);
+		System.out.println(collisions);
+
 	}
 
 
