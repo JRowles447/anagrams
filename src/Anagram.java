@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.Math.*;
 import java.util.*;
 
 public class Anagram {
@@ -12,43 +13,73 @@ public class Anagram {
 		// int total_size = 262139;
 		char[] letters;
 		int collisions = 0;
-		ArrayList<Node> hash_table = new ArrayList<Node>();
 		// Set<Integer> codes = new TreeSet<Integer>();
 		// Set<String> words = new TreeSet<String>();
 		double count = 0;
+		ArrayList<String> file_words = new ArrayList<String>();
+		int word_index = 0;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			while((line = reader.readLine()) != null) {
-				letters = line.toCharArray();
-				char[] c = letters.clone(); 
-				count++;
-				mergeSortLetters(c, 0, (letters.length-1));
-				// // System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)) + "         hashCode: " + c.hashCode());
-				// words.add((new String(c)));
-				// codes.add(c.hashCode());
-				// hash_table[c.hashCode() % total_size] = (new String(c));
-				int index = c.hashCode();
-				if(hash_table.get(index).sorted_anagram != (new String(c)) && hash_table.get(index) != null){
-					collisions++;
-				}
-				else if (hash_table.get(index) != null){ // no anagram stored there yet
-					ArrayList<String> w = new ArrayList<String>();
-					w.add((new String(letters)));
-					hash_table.add(index, (new Node((new String(c)), w)));
-				}
-				else { //they match
-					hash_table.get(index).anagram_list.add(new String(c));
-				}
+				String new_word = new String(line);
+				file_words.add(word_index, new_word);
+				word_index++;
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		ArrayList<Node> hash_table = new ArrayList<Node>(word_index);
+
+		for(int i=0; i <= word_index; i++) {
+			hash_table.add(i, null);
+		}
+		System.out.println(word_index);
+		System.out.println("hash_table size: " + hash_table.size());
+		System.out.println(file_words.size());
+
+		for(int i = 0; i < word_index; i++) {
+			letters = file_words.get(i).toCharArray();
+			char[] c = letters.clone(); 
+			count++;
+			mergeSortLetters(c, 0, (letters.length-1));
+			// // System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)) + "         hashCode: " + c.hashCode());
+			// words.add((new String(c)));
+			// codes.add(c.hashCode());
+			// hash_table[c.hashCode() % total_size] = (new String(c));
+			int index = c.hashCode() % (word_index + 1);
+			if(hash_table.get(index) != null && !hash_table.get(index).sorted_anagram.equals(new String(c))){
+				// System.out.println(hash_table.get(index));
+								System.out.println("START");
+
+				System.out.println("old: " + hash_table.get(index).sorted_anagram);
+				System.out.println((new String(c)));
+
+				System.out.println(hash_table.get(index).sorted_anagram.equals(new String(c)));
+				System.out.println(hash_table.get(index).sorted_anagram.hashCode());
+				System.out.println(c.hashCode());
+				System.out.println((hash_table.get(index).sorted_anagram.hashCode() % (word_index +1)));
+				System.out.println(c.hashCode() % (word_index +1));
+				System.out.println("END");
+
+				collisions++;
+			}
+			else if (hash_table.get(index) == null){ // no anagram stored there yet
+				ArrayList<String> w = new ArrayList<String>();
+				w.add((new String(letters)));
+				hash_table.add(index, (new Node((new String(c)), w)));
+			}
+			else { //they match
+				hash_table.get(index).anagram_list.add(new String(c));
+			}
+		}
+
+
 		// System.out.println(codes.size());
 		System.out.println("count: " + count);
 		// System.out.println("words: " + words.size());
-		System.out.println(hash_table);
-		System.out.println(collisions);
+		// System.out.println(hash_table);
+		System.out.println("collisions: " + collisions);
 
 	}
 
@@ -107,11 +138,15 @@ public class Anagram {
 	}
 	
 	// ascribe value to letters to get hash input value
-
-
+	// map each character to a prime number, comb of them multiplied together is a prime factorization. Only 
+	// anagrams will have the same prime factorization. 
+	// private int hash(String word) {
+	// 	int[] p_nums = {};
+	// }
 
 	// Create a hash table
-	// make good hash function
+	// make good hash function map each character to a prime number, each word will have its own unique prime facotization
+
 	// map hash input value > key to hash table (array)
 	// Chain with linked lists? or quad probe? 
 
