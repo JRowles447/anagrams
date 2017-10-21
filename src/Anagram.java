@@ -9,27 +9,14 @@ import java.util.*;
 public class Anagram {
 
 	public Anagram(String filename) {
-		String line = null;
 		char[] letters;
 		double count = 0;
 		ArrayList<String> file_words = new ArrayList<String>();
-		int word_index = 0;
 
-		// Take in all the words from file to determine length of hash_table
-		// Store the words in file_words for processing
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
-			while((line = reader.readLine()) != null) {
-				String new_word = new String(line);
-				file_words.add(word_index, new_word);
-				word_index++;
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		read_file(file_words, filename);
+		int file_length = file_words.size();
+		int table_size = file_words.size();
 
-		int table_size = word_index;
 		// do not want table size to be power of two or even to reduce collisions
 		while (table_size % 2 == 0) { 
 			table_size++;
@@ -38,12 +25,12 @@ public class Anagram {
 		Node[] hash_table = new Node[table_size];
 
 		// iterate over all the words in the arraylist and store anagram in appropriate location
-		for(int i = 0; i < word_index; i++) {
+		for(int i = 0; i < file_length; i++) {
 			// get the word and the sorted character
 			String word = file_words.get(i);
 
 			// calculate the hash and check vals
-			int[] hash = hash(word, word_index);
+			int[] hash = hash(word, table_size);
 			int index = hash[0];
 			int check = hash[1];
 
@@ -77,6 +64,33 @@ public class Anagram {
 				count++;
 				hash_table[index].anagram_list.add(word);
 			}
+		}
+
+		// int num_classes = 0;
+		for(int j=0; j<table_size; j++){
+			if(hash_table[j] != null){
+				System.out.println(hash_table[j].anagram_list);
+				// num_classes++;
+			}
+		}
+		// System.out.println(num_classes);
+	}
+
+	// Take in all the words from file to determine length of hash_table
+	// Store the words in file_words for processing
+	private void read_file(ArrayList<String> words, String filename){
+		int word_index = 0;
+		String line = null;
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(filename));
+			while((line = reader.readLine()) != null) {
+				String new_word = new String(line);
+				words.add(word_index, new_word);
+				word_index++;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
