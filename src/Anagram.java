@@ -50,13 +50,25 @@ public class Anagram {
 				hash_table[index] = (new Node(w, check));
 			}
 			else if (hash_table[index].check != check){ // anagram class exists at index, but it does not match
-				ArrayList<String> words = hash_table[index].anagram_list;
-				for(int x = 0; x < words.size(); x++){
-					System.out.print(words.get(x) + " ");
-				}
-				System.out.println();
-				// System.out.println(hash(hash_table[index].sorted_anagram, word_index)[0] + "   ==     " + hash((new String(lets)), word_index)[0]);
+				// ArrayList<String> words = hash_table[index].anagram_list;
+				// for(int x = 0; x < words.size(); x++){
+				// 	System.out.print(words.get(x) + " ");
+				// }
+				
 				collisions++;
+				while(hash_table[index] != null && hash_table[index].check != check){
+					index = (index + 1) % hash_table.length;
+				} 
+				if(hash_table[index] == null){ // anagram not present
+					ArrayList<String> w = new ArrayList<String>();
+					w.add(word);
+					hash_table[index] = (new Node(w, check));
+				}
+				else { // anagram class exists at index
+					hash_table[index].anagram_list.add(word);
+				}
+
+
 			}
 			else { // anagram class exists and is not a collision
 				count++;
@@ -65,6 +77,16 @@ public class Anagram {
 		}
 		System.out.println("count: " + count);
 		System.out.println(collisions);
+
+
+
+
+
+		for(int j = 0; j < table_size; j++){
+			if(hash_table[j] != null && hash_table[j].anagram_list.size() >=5){
+				System.out.println(hash_table[j].anagram_list);
+			}
+		}
 	}
 
 	// ascribe value to letters to get hash input value
@@ -82,11 +104,4 @@ public class Anagram {
 		int[] hashed = {hash, real};
 		return hashed;
 	}
-
-	// Create a hash table
-	// make good hash function map each character to a prime number, each word will have its own unique prime facotization
-
-	// map hash input value > key to hash table (array)
-	// Chain with linked lists? or quad probe? 
-
 }
