@@ -29,12 +29,11 @@ public class Anagram {
 			e.printStackTrace();
 		}
 
-
-		Node[] hash_table = new Node[word_index];
-
-		for(int i=0; i < word_index; i++) {
-			hash_table[i] = null;
+		int table_size = word_index;
+		while (table_size % 2 == 0) { // do not want table size to be power of two or even to reduce collisions
+			table_size++;
 		}
+		Node[] hash_table = new Node[table_size];
 
 		// iterate over all the words in the arraylist
 		for(int i = 0; i < word_index; i++) {
@@ -51,13 +50,11 @@ public class Anagram {
 				hash_table[index] = (new Node(w, check));
 			}
 			else if (hash_table[index].check != check){ // anagram class exists at index, but it does not match
-				// System.out.println(hash_table[index].sorted_anagram + "          " + (new String(lets)));
-				// System.out.println(index);
 				ArrayList<String> words = hash_table[index].anagram_list;
 				for(int x = 0; x < words.size(); x++){
 					System.out.print(words.get(x) + " ");
 				}
-				// System.out.println();
+				System.out.println();
 				// System.out.println(hash(hash_table[index].sorted_anagram, word_index)[0] + "   ==     " + hash((new String(lets)), word_index)[0]);
 				collisions++;
 			}
