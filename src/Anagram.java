@@ -37,51 +37,37 @@ public class Anagram {
 			hash_table.add(i, null);
 		}
 
-		System.out.println(hash("hello", word_index));
-		System.out.println(hash("llohe", word_index));
-		System.out.println(hash("leloh", word_index));
 
+		// iterate over all the words in the arraylist
 		for(int i = 0; i < word_index; i++) {
-			letters = file_words.get(i).toCharArray();
-			char[] c = letters.clone(); 
-			count++;
-			mergeSortLetters(c, 0, (letters.length-1));
+			// get the word and the sorted characters (for collision check)
+			String word = file_words.get(i);
+			char[] lets = word.toCharArray();
+			mergeSortLetters(lets, 0, (lets.length-1));
 
-
-			int index = c.hashCode() % (word_index + 1);
-			if(hash_table.get(index) != null && !hash_table.get(index).sorted_anagram.equals(new String(c))){
-				// System.out.println(hash_table.get(index));
-				// System.out.println("START");
-
-				// System.out.println("old: " + hash_table.get(index).sorted_anagram);
-				// System.out.println((new String(c)));
-
-				// System.out.println(hash_table.get(index).sorted_anagram.equals(new String(c)));
-				// System.out.println(hash_table.get(index).sorted_anagram.hashCode());
-				// System.out.println(c.hashCode());
-				// System.out.println((hash_table.get(index).sorted_anagram.hashCode() % (word_index +1)));
-				// System.out.println(c.hashCode() % (word_index +1));
-				// System.out.println("END");
-
+			int index = hash((new String(lets)), word_index);
+			if(hash_table.get(index) == null){ // there is nothing stored at the index
+				ArrayList<String> w = new ArrayList<String>();
+				w.add(word);
+				// System.out.println(index + "        ==       " + hash((new String(lets)), word_index));
+				hash_table.add(index, (new Node((new String(lets)), w)));
+			}
+			else if (hash_table.get(index).sorted_anagram != (new String(lets))){ // anagram class exists at index, but it does not match
+				System.out.println(hash_table.get(index).sorted_anagram + "          " + (new String(lets)));
+				// System.out.println(index);
+				ArrayList<String> words = hash_table.get(index).anagram_list;
+				for(int x = 0; x < words.size(); x++){
+					System.out.print(words.get(x) + " ");
+				}
+				System.out.println();
+				System.out.println(hash(hash_table.get(index).sorted_anagram, word_index) + "   ==     " + hash((new String(lets)), word_index));
 				collisions++;
 			}
-			else if (hash_table.get(index) == null){ // no anagram stored there yet
-				ArrayList<String> w = new ArrayList<String>();
-				w.add((new String(letters)));
-				hash_table.add(index, (new Node((new String(c)), w)));
-			}
-			else { //they match
-				hash_table.get(index).anagram_list.add(new String(c));
+			else { // anagram class exists and is not a collision
+				hash_table.get(index).anagram_list.add(word);
 			}
 		}
-
-
-		// System.out.println(codes.size());
-		System.out.println("count: " + count);
-		// System.out.println("words: " + words.size());
-		// System.out.println(hash_table);
-		System.out.println("collisions: " + collisions);
-
+		System.out.println(collisions);
 	}
 
 	// ascribe value to letters to get hash input value
@@ -91,7 +77,7 @@ public class Anagram {
 		int[] p_nums = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
 		int hash = 1;
 		for(int i = 0; i < word.length(); i++) { // get each character and build up the factorization
-			int charac = word.charAt(i) - 96; 
+			int charac = word.charAt(i) - 97; 
 			hash = hash * p_nums[charac] % table_size;
 		}
 		return hash;
