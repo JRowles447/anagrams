@@ -34,9 +34,10 @@ public class Anagram {
 		for(int i=0; i <= word_index; i++) {
 			hash_table.add(i, null);
 		}
-		System.out.println(word_index);
-		System.out.println("hash_table size: " + hash_table.size());
-		System.out.println(file_words.size());
+		// System.out.println(word_index);
+		// System.out.println("hash_table size: " + hash_table.size());
+		// System.out.println(file_words.size());
+		System.out.println(hash("hello"));
 
 		for(int i = 0; i < word_index; i++) {
 			letters = file_words.get(i).toCharArray();
@@ -50,17 +51,17 @@ public class Anagram {
 			int index = c.hashCode() % (word_index + 1);
 			if(hash_table.get(index) != null && !hash_table.get(index).sorted_anagram.equals(new String(c))){
 				// System.out.println(hash_table.get(index));
-								System.out.println("START");
+				// System.out.println("START");
 
-				System.out.println("old: " + hash_table.get(index).sorted_anagram);
-				System.out.println((new String(c)));
+				// System.out.println("old: " + hash_table.get(index).sorted_anagram);
+				// System.out.println((new String(c)));
 
-				System.out.println(hash_table.get(index).sorted_anagram.equals(new String(c)));
-				System.out.println(hash_table.get(index).sorted_anagram.hashCode());
-				System.out.println(c.hashCode());
-				System.out.println((hash_table.get(index).sorted_anagram.hashCode() % (word_index +1)));
-				System.out.println(c.hashCode() % (word_index +1));
-				System.out.println("END");
+				// System.out.println(hash_table.get(index).sorted_anagram.equals(new String(c)));
+				// System.out.println(hash_table.get(index).sorted_anagram.hashCode());
+				// System.out.println(c.hashCode());
+				// System.out.println((hash_table.get(index).sorted_anagram.hashCode() % (word_index +1)));
+				// System.out.println(c.hashCode() % (word_index +1));
+				// System.out.println("END");
 
 				collisions++;
 			}
@@ -140,9 +141,11 @@ public class Anagram {
 	// ascribe value to letters to get hash input value
 	// map each character to a prime number, comb of them multiplied together is a prime factorization. Only 
 	// anagrams will have the same prime factorization. 
-	// private int hash(String word) {
-	// 	int[] p_nums = {};
-	// }
+	private int hash(String word) {
+		int[] p_nums = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+		System.out.println(p_nums.length);
+		return 0;
+	}
 
 	// Create a hash table
 	// make good hash function map each character to a prime number, each word will have its own unique prime facotization
