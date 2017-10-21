@@ -10,14 +10,13 @@ public class Anagram {
 
 	public Anagram(String filename) {
 		String line = null;
-		// int total_size = 262139;
 		char[] letters;
 		int collisions = 0;
-		// Set<Integer> codes = new TreeSet<Integer>();
-		// Set<String> words = new TreeSet<String>();
 		double count = 0;
 		ArrayList<String> file_words = new ArrayList<String>();
 		int word_index = 0;
+
+		// Take in all the words from file to determine length of hash_table
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			while((line = reader.readLine()) != null) {
@@ -29,25 +28,26 @@ public class Anagram {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+
+
+
 		ArrayList<Node> hash_table = new ArrayList<Node>(word_index);
 
 		for(int i=0; i <= word_index; i++) {
 			hash_table.add(i, null);
 		}
-		// System.out.println(word_index);
-		// System.out.println("hash_table size: " + hash_table.size());
-		// System.out.println(file_words.size());
-		System.out.println(hash("hello"));
+
+		System.out.println(hash("hello", word_index));
+		System.out.println(hash("llohe", word_index));
+		System.out.println(hash("leloh", word_index));
 
 		for(int i = 0; i < word_index; i++) {
 			letters = file_words.get(i).toCharArray();
 			char[] c = letters.clone(); 
 			count++;
 			mergeSortLetters(c, 0, (letters.length-1));
-			// // System.out.println("c: " + (new String(c)) + "      orig: " + (new String(letters)) + "         hashCode: " + c.hashCode());
-			// words.add((new String(c)));
-			// codes.add(c.hashCode());
-			// hash_table[c.hashCode() % total_size] = (new String(c));
+
+
 			int index = c.hashCode() % (word_index + 1);
 			if(hash_table.get(index) != null && !hash_table.get(index).sorted_anagram.equals(new String(c))){
 				// System.out.println(hash_table.get(index));
@@ -84,10 +84,18 @@ public class Anagram {
 
 	}
 
-
-
-	// Have to read in files
-	// have to scan through files
+	// ascribe value to letters to get hash input value
+	// map each character to a prime number, comb of them multiplied together is a prime factorization. Only 
+	// anagrams will have the same prime factorization. 
+	private int hash(String word, int table_size) {
+		int[] p_nums = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+		int hash = 1;
+		for(int i = 0; i < word.length(); i++) { // get each character and build up the factorization
+			int charac = word.charAt(i) - 96; 
+			hash = hash * p_nums[charac] % table_size;
+		}
+		return hash;
+	}
 
 	// Sort the letters in word alphabetically using merge sort
 	private void mergeSortLetters(char[] letters, int start, int end) {
@@ -136,15 +144,6 @@ public class Anagram {
 			}
 		}
 
-	}
-	
-	// ascribe value to letters to get hash input value
-	// map each character to a prime number, comb of them multiplied together is a prime factorization. Only 
-	// anagrams will have the same prime factorization. 
-	private int hash(String word) {
-		int[] p_nums = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
-		System.out.println(p_nums.length);
-		return 0;
 	}
 
 	// Create a hash table
