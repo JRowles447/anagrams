@@ -30,7 +30,6 @@ public class Anagram {
 		}
 
 
-
 		Node[] hash_table = new Node[word_index];
 
 		for(int i=0; i < word_index; i++) {
@@ -41,10 +40,8 @@ public class Anagram {
 		for(int i = 0; i < word_index; i++) {
 			// get the word and the sorted characters (for collision check)
 			String word = file_words.get(i);
-			char[] lets = word.toCharArray();
-			mergeSortLetters(lets, 0, (lets.length-1));
 
-			int[] hash = hash((new String(lets)), word_index);
+			int[] hash = hash(word, word_index);
 			int index = hash[0];
 			int check = hash[1];
 			if(hash_table[index] == null){ // there is nothing stored at the index
@@ -87,55 +84,6 @@ public class Anagram {
 		}
 		int[] hashed = {hash, real};
 		return hashed;
-	}
-
-	// Sort the letters in word alphabetically using merge sort
-	private void mergeSortLetters(char[] letters, int start, int end) {
-		if (start < end) {
-			int middle = (start + end)/2;
-			mergeSortLetters(letters, start, middle);
-			mergeSortLetters(letters, middle + 1, end);
-			mergeLetters(letters, start, middle, end);
-		}
-	}
-
-	private void mergeLetters(char[] letters, int start, int middle, int end) {
-		int n1 = middle - start; 
-		int n2 = end - middle;
-
-		char[] left = new char[n1+1];
-		char[] right = new char[n2];
-
-		for(int i = 0; i <= n1; i++) {
-			left[i] = letters[start + i];
-		}
-		for(int i = 0; i < n2; i++) {
-			right[i] = letters[middle + i + 1];
-		}
-
-		int i = 0;
-		int j = 0;
-		for(int index = start; index <= end; index++){
-			if(!(i < left.length) || !(j < right.length)){ // one of the lists is finished
-				if(!(i < left.length)) { // left list is finished
-					letters[index] = right[j];
-					j++;
-				}
-				else { // right list is finished
-					letters[index] = left[i];
-					i++;
-				}
-			} 
-			else if(left[i] <= right[j]) { // front of left list <= front of right list
-				letters[index] = left[i];
-				i++;
-			}
-			else { //front of right list smaller
-				letters[index] = right[j];
-				j++;
-			}
-		}
-
 	}
 
 	// Create a hash table
