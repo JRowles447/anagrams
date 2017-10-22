@@ -9,7 +9,7 @@ import java.lang.Math.*;
 import java.util.*;
 
 public class Anagram {
-	public Anagram(String filename) {
+	public Anagram(String filename, String outfile) {
 		char[] letters;
 		double count = 0;
 		ArrayList<String> file_words = new ArrayList<String>();
@@ -79,14 +79,9 @@ public class Anagram {
 		System.out.println("Total execution time: " + (endTime - startTime) );
 
 
-		// determine name of file from input dictionary
-		String write = "";
-		if(filename.contains("dict1")){
-			write = "anagram1";
-		}
-		else{
-			write = "anagram2";
-		}
+		// set output file name
+		String write = outfile;
+		
 		// write anagram classes to output file
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(write));
