@@ -17,7 +17,7 @@ public class Anagram {
 		read_file(file_words, filename);
 
 		// start time after I/O
-		final long startTime = System.currentTimeMillis();
+		// final long startTime = System.currentTimeMillis();
 
 
 		int file_length = file_words.size();
@@ -74,9 +74,9 @@ public class Anagram {
 
 
 
-		final long endTime = System.currentTimeMillis();
+		// final long endTime = System.currentTimeMillis();
 
-		System.out.println("Total execution time: " + (endTime - startTime) );
+		// System.out.println("Total execution time: " + (endTime - startTime) );
 
 
 		// set output file name
