@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -67,13 +69,29 @@ public class Anagram {
 		}
 
 		// int num_classes = 0;
-		for(int j=0; j<table_size; j++){
-			if(hash_table[j] != null){
-				System.out.println(hash_table[j].anagram_list);
-				// num_classes++;
+		String write = "";
+		if(filename.contains("dict1")){
+			write = "anagram1";
+		}
+		else{
+			write = "anagram2";
+		}
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(write));
+			// System.out.println(hash_table[29].anagram_list.toString());
+			for(int j=0; j<table_size; j++){
+				if(hash_table[j] != null){
+					String to_file = hash_table[j].anagram_list.toString();
+					// System.out.println(to_file);
+					writer.write(to_file);
+				}
 			}
 		}
-		// System.out.println(num_classes);
+		catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("FAILURE");
+		}
 	}
 
 	// Take in all the words from file to determine length of hash_table
