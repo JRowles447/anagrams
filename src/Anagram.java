@@ -15,6 +15,11 @@ public class Anagram {
 		ArrayList<String> file_words = new ArrayList<String>();
 
 		read_file(file_words, filename);
+
+		// start time after I/O
+		final long startTime = System.currentTimeMillis();
+
+
 		int file_length = file_words.size();
 		int table_size = file_words.size();
 
@@ -66,6 +71,12 @@ public class Anagram {
 				hash_table[index].anagram_list.add(word);
 			}
 		}
+
+
+
+		final long endTime = System.currentTimeMillis();
+
+		System.out.println("Total execution time: " + (endTime - startTime) );
 
 
 		// determine name of file from input dictionary
