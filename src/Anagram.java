@@ -9,7 +9,6 @@ import java.lang.Math.*;
 import java.util.*;
 
 public class Anagram {
-
 	public Anagram(String filename) {
 		char[] letters;
 		double count = 0;
@@ -23,7 +22,7 @@ public class Anagram {
 		while (table_size % 2 == 0) { 
 			table_size++;
 		}
-		// Uses Node support class to pair check value and arraylist of anagrams
+		// uses Node support class to pair check value and arraylist of anagrams
 		Node[] hash_table = new Node[table_size];
 
 		// iterate over all the words in the arraylist and store anagram in appropriate location
@@ -68,7 +67,8 @@ public class Anagram {
 			}
 		}
 
-		// int num_classes = 0;
+
+		// determine name of file from input dictionary
 		String write = "";
 		if(filename.contains("dict1")){
 			write = "anagram1";
@@ -76,21 +76,19 @@ public class Anagram {
 		else{
 			write = "anagram2";
 		}
-		
+		// write anagram classes to output file
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(write));
-			// System.out.println(hash_table[29].anagram_list.toString());
+			// iterate over hash_table and check if there is an entry (i.e. not null)
 			for(int j=0; j<table_size; j++){
 				if(hash_table[j] != null){
 					String to_file = hash_table[j].anagram_list.toString();
-					// System.out.println(to_file);
 					writer.write(to_file);
 				}
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("FAILURE");
 		}
 	}
 
@@ -112,14 +110,15 @@ public class Anagram {
 		}
 	}
 
-	// map each character to a prime number, combination of them multiplied together is a prime factorization.  
+	// Map each character to a prime number, combination of them multiplied together is a prime factorization.  
 	// Only anagrams will have the same prime factorization, but issue of collisions from modding from table size. 
-	// returns a tuple with hash and check values
+	// Returns a tuple with hash and check values
 	private int[] hash(String word, int table_size) {
 		int[] p_nums = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
 		int hash = 1; // index for hash_table 
 		int check = 1; // check num for collisions for anagram (same anagram class should have same check value) 
-		for(int i = 0; i < word.length(); i++) { // get each character and build up the factorization
+		// get each character and build up the factorization
+		for(int i = 0; i < word.length(); i++) {
 			int charac = word.charAt(i) - 97; 
 			hash = hash * p_nums[charac] % table_size;
 			check = check * p_nums[charac];
