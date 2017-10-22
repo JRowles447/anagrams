@@ -1,0 +1,13 @@
+Number of Anagram classes:
+Anagram1: 67606
+Anagram2: 320750
+
+Time (after reading in file and before writing using java time): 
+Anagram1: .045 seconds
+Anagram2: 4.926 seconds 
+
+Time (from system Measure-Command Powershell utility, including read time from file but not including write to output time):
+TotalMilliseconds Anagram1: 227.9945 
+TotalMilliseconds Anagram2: 7817.052
+
+Ran on Windows 10 Lenovo Ideapad
