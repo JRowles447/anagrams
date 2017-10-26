@@ -6,13 +6,11 @@ Traverses through a file with one word per line creating a hash table with anagr
 ---
 Compile the project with:   
 ```
-javac ./src/Anagram.java -d ./build
-javac ./src/Driver.java -d ./build    
-javac ./src/Node.java -d ./build
+javac ./src/* -d ./build
 ```
-Run from the root of the project directory using:   
+Run from the build folder of the project directory using:   
 `
-java ./build/Driver ./inputs/dict1 ./outputs/anagram1
+java Driver ../inputs/dict1 ../outputs/anagram1
 `
 
 Driver takes two arguments:
